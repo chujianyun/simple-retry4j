@@ -21,7 +21,7 @@ public class OperationHelper {
      * @param maxAttemptTimes 最大重试次数
      * @param <T>             返回值类型
      * @return 返回值
-     * @throws Exception
+     * @throws Exception 业务异常或者超过最大重试次数后的最后一次尝试抛出的异常
      */
     public static <T> T executeWithRetry(Operation<T> operation, int maxAttemptTimes) throws Exception {
         return executeWithRetry(operation, maxAttemptTimes, 0, null);
@@ -36,7 +36,7 @@ public class OperationHelper {
      * @param timeUnit        时间单位
      * @param <T>             返回值类型
      * @return 返回值
-     * @throws Exception
+     * @throws Exception 业务异常或者超过最大重试次数后的最后一次尝试抛出的异常
      */
     public static <T> T executeWithRetry(Operation<T> operation, int maxAttemptTimes, int timeDelay, TimeUnit timeUnit) throws Exception {
 
