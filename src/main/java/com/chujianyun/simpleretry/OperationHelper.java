@@ -14,13 +14,33 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public class OperationHelper {
 
-    public static <T> T executeWithRetry(Operation<T> operation, int maxAttempts) throws Exception {
-        return executeWithRetry(operation, maxAttempts, 0, null);
+    /**
+     * 带重试的操作执行
+     *
+     * @param operation       执行的操作
+     * @param maxAttemptTimes 最大重试次数
+     * @param <T>             返回值类型
+     * @return 返回值
+     * @throws Exception
+     */
+    public static <T> T executeWithRetry(Operation<T> operation, int maxAttemptTimes) throws Exception {
+        return executeWithRetry(operation, maxAttemptTimes, 0, null);
     }
 
-    public static <T> T executeWithRetry(Operation<T> operation, int maxAttempts, int time, TimeUnit timeUnit) throws Exception {
+    /**
+     * 带重试和延时的操作执行
+     *
+     * @param operation       执行的操作
+     * @param maxAttemptTimes 最大重试次数
+     * @param timeDelay       延时
+     * @param timeUnit        时间单位
+     * @param <T>             返回值类型
+     * @return 返回值
+     * @throws Exception
+     */
+    public static <T> T executeWithRetry(Operation<T> operation, int maxAttemptTimes, int timeDelay, TimeUnit timeUnit) throws Exception {
 
-        if (maxAttempts < 1) {
+        if (maxAttemptTimes < 1) {
             throw new IllegalArgumentException("max attempt times must not less than one");
         }
         int count = 1;
@@ -35,15 +55,14 @@ public class OperationHelper {
                 log.debug("OperationHelper#executeWithRetry", e);
                 //累计
                 count++;
-                if (count > maxAttempts) {
+                if (count > maxAttemptTimes) {
                     throw e;
                 }
-
                 // 延时
-                if (time >= 0 && timeUnit != null) {
+                if (timeDelay >= 0 && timeUnit != null) {
                     try {
-                        log.debug("延时{}毫秒", timeUnit.toMillis(time));
-                        timeUnit.sleep(time);
+                        log.debug("延时{}毫秒", timeUnit.toMillis(timeDelay));
+                        timeUnit.sleep(timeDelay);
                     } catch (InterruptedException ex) {
                         //ignore
                     }
