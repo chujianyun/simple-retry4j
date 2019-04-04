@@ -40,8 +40,8 @@ public class OperationHelper {
      */
     public static <T> T executeWithRetry(Operation<T> operation, int maxAttemptTimes, int timeDelay, TimeUnit timeUnit) throws Exception {
 
-        if (maxAttemptTimes < 1) {
-            throw new IllegalArgumentException("max attempt times must not less than one");
+        if (maxAttemptTimes < 0) {
+            throw new IllegalArgumentException("max attempt times must not be negative");
         }
         int count = 1;
 
