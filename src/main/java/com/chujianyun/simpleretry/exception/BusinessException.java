@@ -1,8 +1,10 @@
 package com.chujianyun.simpleretry.exception;
 
 /**
- * @author: 了凡 liuwangyang@youzan.com
+ * 模拟业务异常
+ *
+ * @author: liuwangyanghdu@163.com
  * @date: 2019-04-05 02:11
  */
-public class BusinessException extends RuntimeException{
+public class BusinessException extends RuntimeException {
 }
