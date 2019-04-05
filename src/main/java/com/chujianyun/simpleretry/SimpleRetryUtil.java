@@ -49,8 +49,8 @@ public class SimpleRetryUtil {
                 }
 
                 /* ---------------- 需要重试的返回值 -------------- */
-                boolean hasNext = doRetryAndHasNext(++retryCount, maxRetries, delayDuration);
-                if (!hasNext) {
+                boolean hasNextRetry = hasNextRetryAfterOperation(++retryCount, maxRetries, delayDuration);
+                if (!hasNextRetry) {
                     return result;
                 }
             } catch (Exception e) {
@@ -61,16 +61,19 @@ public class SimpleRetryUtil {
                 }
                 log.debug("SimpleRetryUtil#executeWithRetry", e);
                 /* ---------------- 需要重试的异常 -------------- */
-                boolean hasNext = doRetryAndHasNext(++retryCount, maxRetries, delayDuration);
-                if (!hasNext) {
-                    throw e;
+                boolean hasNextRetry = hasNextRetryAfterOperation(++retryCount, maxRetries, delayDuration);
+                if (!hasNextRetry) {
+                    continue;
                 }
-
+                throw e;
             }
         }
     }
 
-    private static boolean doRetryAndHasNext(int retryCount, Integer maxRetries, Duration delayDuration) {
+    /**
+     * 判断运行之后是否还有下一次重试
+     */
+    private static boolean hasNextRetryAfterOperation(int retryCount, Integer maxRetries, Duration delayDuration) {
         // 有限次重试
         if (maxRetries != null) {
             if (retryCount > maxRetries) {
