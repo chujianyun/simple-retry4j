@@ -63,24 +63,12 @@ public class RetryPolicy<T> {
 
     public static class Builder<T> {
 
-        /**
-         * 最大重试次数（如果不设置则默认不满足重试的异常或策略则无限重试）
-         */
         private Integer maxRetries;
 
-        /**
-         * 延时时间
-         */
         private Duration delayDuration;
 
-        /**
-         * 不需要重试的异常列表
-         */
         private List<Class<? extends Exception>> abortExceptions = new ArrayList<>();
 
-        /**
-         * 不需要重试的条件列表(满足其中一个则不重试)
-         */
         private List<Predicate<T>> abortConditions = new ArrayList<>();
 
 
