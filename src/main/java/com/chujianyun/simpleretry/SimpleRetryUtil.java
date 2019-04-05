@@ -25,7 +25,7 @@ public class SimpleRetryUtil {
      * @return 返回值
      * @throws Exception 业务异常或者超过最大重试次数后的最后一次尝试抛出的异常
      */
-    public static <T> T executeWithRetry(Operation<T> operation, RetryPolicy<T> retryPolicy) throws Exception {
+    public static <T> T executeWithRetry(Operation<T> operation, RetryPolicy retryPolicy) throws Exception {
 
         // 最大重试次数
         Integer maxRetries = retryPolicy.getMaxRetries();
@@ -42,7 +42,7 @@ public class SimpleRetryUtil {
                 T result = operation.execute();
 
                 // 不设置终止条件或者设置了且满足则返回，否则还会重试
-                List<Predicate<T>> abortConditions = retryPolicy.getAbortConditions();
+                List<Predicate> abortConditions = retryPolicy.getAbortConditions();
                 /* ---------------- 不需要重试的返回值 -------------- */
                 if (isInCondition(result, abortConditions)) {
                     return result;
@@ -110,12 +110,12 @@ public class SimpleRetryUtil {
     /**
      * 是否符合不需要终止的条件
      */
-    private static <T> boolean isInCondition(T result, List<Predicate<T>> abortConditions) {
+    private static <T> boolean isInCondition(T result, List<Predicate> abortConditions) {
         if (CollectionUtils.isEmpty(abortConditions)) {
             return true;
         }
 
-        for (Predicate<T> predicate : abortConditions) {
+        for (Predicate predicate : abortConditions) {
             if (predicate.test(result)) {
                 return true;
             }
