@@ -59,6 +59,11 @@ public class RetryPolicy {
         }
     }
 
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
     public static class Builder {
 
         private Integer maxRetries;

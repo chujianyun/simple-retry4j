@@ -21,7 +21,7 @@ public class SimpleRetryUtilTest {
 
     @Test(expected = Exception.class)
     public void executeWithRetry_Exception() throws Exception {
-        RetryPolicy retryPolicy = new RetryPolicy.Builder()
+        RetryPolicy retryPolicy = RetryPolicy.builder()
                 .maxRetries(3)
                 .build();
 
@@ -33,7 +33,7 @@ public class SimpleRetryUtilTest {
     @Test(expected = BusinessException.class)
     public void executeWithRetry_BusinessException() throws Exception {
 
-        RetryPolicy retryPolicy = new RetryPolicy.Builder()
+        RetryPolicy retryPolicy = RetryPolicy.builder()
                 .maxRetries(3)
                 .delayDuration(Duration.ofSeconds(5))
                 .build();
@@ -46,7 +46,7 @@ public class SimpleRetryUtilTest {
     @Test
     public void executeWithAbortException() throws Exception {
 
-        RetryPolicy retryPolicy = new RetryPolicy.Builder()
+        RetryPolicy retryPolicy = RetryPolicy.builder()
                 .maxRetries(3)
                 .delayDuration(Duration.ofSeconds(5))
                 .abortException(IllegalArgumentException.class)
@@ -69,7 +69,7 @@ public class SimpleRetryUtilTest {
     @Test
     public void executeWithAbortException2() throws Exception {
 
-        RetryPolicy retryPolicy = new RetryPolicy.Builder()
+        RetryPolicy retryPolicy = RetryPolicy.builder()
                 .maxRetries(3)
                 .delayDuration(Duration.ofSeconds(5))
                 .abortException(BusinessException.class)
@@ -92,7 +92,7 @@ public class SimpleRetryUtilTest {
     @Test
     public void executeWithAbortCondition() throws Exception {
 
-        RetryPolicy retryPolicy = new RetryPolicy.Builder()
+        RetryPolicy retryPolicy = RetryPolicy.builder()
                 .maxRetries(3)
                 .delayDuration(Duration.ofSeconds(5))
                 .abortCondition(Objects::nonNull)
