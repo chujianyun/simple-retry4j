@@ -48,11 +48,15 @@ public class OperationHelper {
         while (true) {
             try {
                 return operation.execute();
-            } catch (BusinessException businessException) {
-                log.debug("OperationHelper#businessException", businessException);
-                throw new BusinessException();
             } catch (Exception e) {
+                /* ---------------- 不需要重试的异常 -------------- */
+                //业务异常不需要重试
+                if (e instanceof BusinessException) {
+                    throw e;
+                }
                 log.debug("OperationHelper#executeWithRetry", e);
+
+                /* ---------------- 重试 -------------- */
                 //累计
                 count++;
                 if (count > maxAttemptTimes) {
