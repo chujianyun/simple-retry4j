@@ -5,6 +5,7 @@ import org.apache.commons.collections4.CollectionUtils;
 
 import java.time.Duration;
 import java.util.List;
+import java.util.concurrent.Callable;
 import java.util.function.Predicate;
 
 /**
@@ -25,7 +26,7 @@ public class SimpleRetryUtil {
      * @return 返回值
      * @throws Exception 业务异常或者超过最大重试次数后的最后一次尝试抛出的异常
      */
-    public static <T> T executeWithRetry(Operation<T> operation, RetryPolicy retryPolicy) throws Exception {
+    public static <T> T executeWithRetry(Callable<T> operation, RetryPolicy retryPolicy) throws Exception {
 
         // 最大重试次数
         Integer maxRetries = retryPolicy.getMaxRetries();
@@ -39,7 +40,7 @@ public class SimpleRetryUtil {
 
         while (true) {
             try {
-                T result = operation.execute();
+                T result = operation.call();
 
                 // 不设置终止条件或者设置了且满足则返回，否则还会重试
                 List<Predicate> abortConditions = retryPolicy.getAbortConditions();
