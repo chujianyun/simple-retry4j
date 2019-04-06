@@ -7,6 +7,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Predicate;
 
 /**
@@ -95,6 +96,20 @@ public class RetryPolicy {
             }
 
             this.delayDuration = delayDuration;
+            return this;
+        }
+
+        /**
+         * 重试的时间间隔
+         */
+        public Builder delayDuration(Integer time, TimeUnit timeUnit) {
+            if (time == null || time < 0) {
+                throw new IllegalArgumentException("time must not be null or negative");
+            }
+            if (timeUnit == null) {
+                throw new IllegalArgumentException("timeUnit must not be null or negative");
+            }
+            this.delayDuration = Duration.ofMillis(timeUnit.toMillis(time));
             return this;
         }
 

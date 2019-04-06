@@ -2,6 +2,7 @@ package com.chujianyun.simpleretry;
 
 import com.chujianyun.simpleretry.exception.BusinessException;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.time.Duration;
@@ -17,6 +18,24 @@ import java.util.concurrent.TimeUnit;
  */
 @Slf4j
 public class SimpleRetryUtilTest {
+
+
+    /**
+     * 提供两种设置延时时间的方法
+     */
+    @Test
+    public void delayDuration() {
+        RetryPolicy retryPolicy1 = RetryPolicy.builder()
+                .maxRetries(3)
+                .delayDuration(Duration.ofSeconds(5))
+                .build();
+
+        RetryPolicy retryPolicy2 = RetryPolicy.builder()
+                .maxRetries(3)
+                .delayDuration(5, TimeUnit.SECONDS)
+                .build();
+        Assert.assertEquals(retryPolicy1.getDelayDuration(), retryPolicy2.getDelayDuration());
+    }
 
 
     @Test(expected = Exception.class)
@@ -53,17 +72,22 @@ public class SimpleRetryUtilTest {
                 .abortException(BusinessException.class)
                 .build();
 
-        Integer result = SimpleRetryUtil.executeWithRetry(() -> {
-            // 随机数为奇数时报参数异常，会重试
-            Random random = new Random();
-            int nextInt = random.nextInt(100);
-            if ((nextInt & 1) == 1) {
-                log.debug("生成的随机数{}为奇数，异常在不重试异常列表中，报错后不会触发重试", nextInt);
-                throw new IllegalArgumentException();
-            }
-            return random.nextInt(5);
-        }, retryPolicy);
-        log.debug("最终返回值{}", result);
+        try {
+            Integer result = SimpleRetryUtil.executeWithRetry(() -> {
+                // 随机数为奇数时报参数异常，会重试
+                Random random = new Random();
+                int nextInt = random.nextInt(100);
+                if ((nextInt & 1) == 1) {
+                    log.debug("生成的随机数{}为奇数，异常在不重试异常列表中，报错后不会触发重试", nextInt);
+                    throw new IllegalArgumentException();
+                }
+                return random.nextInt(5);
+            }, retryPolicy);
+            log.debug("最终返回值{}", result);
+        } catch (IllegalArgumentException e) {
+            log.debug("报错");
+        }
+
     }
 
     @Test
