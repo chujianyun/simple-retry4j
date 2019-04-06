@@ -37,7 +37,9 @@ public class SimpleRetryUtilTest {
         Assert.assertEquals(retryPolicy1.getDelayDuration(), retryPolicy2.getDelayDuration());
     }
 
-
+    /**
+     * 模拟异常重试
+     */
     @Test(expected = Exception.class)
     public void executeWithRetry_Exception() throws Exception {
         RetryPolicy retryPolicy = RetryPolicy.builder()
@@ -49,6 +51,9 @@ public class SimpleRetryUtilTest {
         }, retryPolicy);
     }
 
+    /**
+     * 模拟异常重试
+     */
     @Test(expected = BusinessException.class)
     public void executeWithRetry_BusinessException() throws Exception {
 
@@ -62,6 +67,9 @@ public class SimpleRetryUtilTest {
         }, retryPolicy);
     }
 
+    /**
+     * 模拟终止异常不重试
+     */
     @Test
     public void executeWithAbortException() throws Exception {
 
@@ -90,6 +98,9 @@ public class SimpleRetryUtilTest {
 
     }
 
+    /**
+     * 模拟不在终止异常触发重试
+     */
     @Test
     public void executeWithAbortException2() throws Exception {
 
@@ -113,6 +124,9 @@ public class SimpleRetryUtilTest {
         log.debug("最终返回值{}", result);
     }
 
+    /**
+     * 满足条件的返回值不重试的设置
+     */
     @Test
     public void executeWithAbortCondition() throws Exception {
 
