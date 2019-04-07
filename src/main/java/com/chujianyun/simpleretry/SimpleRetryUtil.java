@@ -9,7 +9,12 @@ import java.util.concurrent.Callable;
 import java.util.function.Predicate;
 
 /**
- * 操作封装
+ * 方法重试工具类
+ * <p>
+ * 主要场景：
+ * 1、轮询直到满足某个条件
+ * 2、乐观锁重试
+ * 3、其他异常或者不满足某个条件重试的场景
  *
  * @author: 明明如月 liuwangyanghudu@163.com
  * @date: 2019-04-05 02:09
@@ -83,8 +88,8 @@ public class SimpleRetryUtil {
 
         // 延时
         if (!delayDuration.isNegative()) {
-                log.debug("延时{}毫秒", delayDuration.toMillis());
-                Thread.sleep(delayDuration.toMillis());
+            log.debug("延时{}毫秒", delayDuration.toMillis());
+            Thread.sleep(delayDuration.toMillis());
         }
         log.debug("第{}次重试", retryCount);
         return true;
