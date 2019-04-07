@@ -73,7 +73,7 @@ public class SimpleRetryUtil {
     /**
      * 判断运行之后是否还有下一次重试
      */
-    private static boolean hasNextRetryAfterOperation(int retryCount, Integer maxRetries, Duration delayDuration) {
+    private static boolean hasNextRetryAfterOperation(int retryCount, Integer maxRetries, Duration delayDuration) throws InterruptedException {
         // 有限次重试
         if (maxRetries != null) {
             if (retryCount > maxRetries) {
@@ -83,12 +83,8 @@ public class SimpleRetryUtil {
 
         // 延时
         if (!delayDuration.isNegative()) {
-            try {
                 log.debug("延时{}毫秒", delayDuration.toMillis());
                 Thread.sleep(delayDuration.toMillis());
-            } catch (InterruptedException ex) {
-                //ignore
-            }
         }
         log.debug("第{}次重试", retryCount);
         return true;
