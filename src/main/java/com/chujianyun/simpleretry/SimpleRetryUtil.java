@@ -60,13 +60,12 @@ public class SimpleRetryUtil {
                 if (isInExceptions(e, abortExceptions)) {
                     throw e;
                 }
-                log.debug("SimpleRetryUtil#executeWithRetry", e);
+
                 /* ---------------- 需要重试的异常 -------------- */
                 boolean hasNextRetry = hasNextRetryAfterOperation(++retryCount, maxRetries, delayDuration);
-                if (hasNextRetry) {
-                    continue;
+                if (!hasNextRetry) {
+                    throw e;
                 }
-                throw e;
             }
         }
     }
