@@ -8,6 +8,7 @@ import org.junit.jupiter.api.TestInstance;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.powermock.api.mockito.PowerMockito;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.time.Duration;
@@ -65,9 +66,9 @@ public class SimpleRetryUtilTest {
                 .maxRetries(3)
                 .build();
 
-        SimpleRetryUtil.executeWithRetry(() -> {
-            throw new Exception();
-        }, retryPolicy);
+        Mockito.doThrow(new Exception("test")).when(callable).call();
+
+        SimpleRetryUtil.executeWithRetry(callable, retryPolicy);
     }
 
     /**
