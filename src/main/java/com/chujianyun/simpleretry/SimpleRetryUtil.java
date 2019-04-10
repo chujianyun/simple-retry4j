@@ -6,6 +6,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import java.time.Duration;
 import java.util.List;
 import java.util.concurrent.Callable;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 /**
@@ -24,14 +25,30 @@ public class SimpleRetryUtil {
 
 
     /**
+     * 无返回值的重试方法
+     */
+    public static <T> void executeWithRetry(Consumer<T> consumer, T data, RetryPolicy retryPolicy) throws Exception {
+        executeWithRetry(null, consumer, data, retryPolicy);
+    }
+
+    /**
+     * 带返回值的重试方法
+     */
+    public static <T> T executeWithRetry(Callable<T> callable, RetryPolicy retryPolicy) throws Exception {
+
+        return executeWithRetry(callable, null, null, retryPolicy);
+    }
+
+
+    /**
      * 带重试和延时的操作执行
      *
-     * @param operation   执行的操作
+     * @param callable    执行的操作
      * @param retryPolicy 重试策略
      * @return 返回值
      * @throws Exception 业务异常或者超过最大重试次数后的最后一次尝试抛出的异常
      */
-    public static <T> T executeWithRetry(Callable<T> operation, RetryPolicy retryPolicy) throws Exception {
+    private static <T> T executeWithRetry(Callable<T> callable, Consumer<T> consumer, T data, RetryPolicy retryPolicy) throws Exception {
 
         // 最大重试次数
         Integer maxRetries = retryPolicy.getMaxRetries();
@@ -45,19 +62,29 @@ public class SimpleRetryUtil {
 
         while (true) {
             try {
-                T result = operation.call();
 
-                // 不设置终止条件或者设置了且满足则返回，否则还会重试
-                List<Predicate> abortConditions = retryPolicy.getAbortConditions();
-                /* ---------------- 不需要重试的返回值 -------------- */
-                if (isInCondition(result, abortConditions)) {
-                    return result;
+                // 不带返回值的
+                if (consumer != null) {
+                    consumer.accept(data);
+                    return null;
                 }
 
-                /* ---------------- 需要重试的返回值 -------------- */
-                boolean hasNextRetry = hasNextRetryAfterOperation(++retryCount, maxRetries, delayDuration);
-                if (!hasNextRetry) {
-                    return result;
+                //  带返回值的
+                if (callable != null) {
+                    T result = callable.call();
+
+                    // 不设置终止条件或者设置了且满足则返回，否则还会重试
+                    List<Predicate> abortConditions = retryPolicy.getAbortConditions();
+                    /* ---------------- 不需要重试的返回值 -------------- */
+                    if (isInCondition(result, abortConditions)) {
+                        return result;
+                    }
+
+                    /* ---------------- 需要重试的返回值 -------------- */
+                    boolean hasNextRetry = hasNextRetryAfterOperation(++retryCount, maxRetries, delayDuration);
+                    if (!hasNextRetry) {
+                        return result;
+                    }
                 }
             } catch (Exception e) {
                 /* ---------------- 不需要重试的异常 -------------- */

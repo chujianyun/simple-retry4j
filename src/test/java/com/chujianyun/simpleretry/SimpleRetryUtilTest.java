@@ -6,6 +6,8 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
@@ -147,6 +149,32 @@ public class SimpleRetryUtilTest {
             return random.nextInt(5);
         }, retryPolicy);
         log.debug("最终返回值{}", result);
+    }
+
+
+    @Test
+    public void consumerTest() throws Exception {
+        RetryPolicy retryPolicy = RetryPolicy.builder()
+                .maxRetries(3)
+                .delayDuration(Duration.ofSeconds(5))
+                .build();
+        List<Integer> data = new ArrayList<>(4);
+        data.add(1);
+        data.add(2);
+        data.add(3);
+        data.add(4);
+        SimpleRetryUtil.executeWithRetry((List<Integer> list) -> {
+
+            // 随机数为奇数时报参数异常，会重试
+            Random random = new Random();
+            int nextInt = random.nextInt(1000);
+            if ((nextInt & 1) == 1) {
+                log.debug("随机数为{}，触发报错", nextInt);
+                throw new RuntimeException("测试");
+            }
+            System.out.println("消费成功，列表个数" + list.size());
+
+        }, data, retryPolicy);
     }
 
 
