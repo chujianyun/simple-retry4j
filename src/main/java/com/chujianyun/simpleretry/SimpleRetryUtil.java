@@ -114,7 +114,7 @@ public class SimpleRetryUtil {
         }
 
         // 延时
-        if (!delayDuration.isNegative()) {
+        if (delayDuration != null && !delayDuration.isNegative()) {
             log.debug("延时{}毫秒", delayDuration.toMillis());
             Thread.sleep(delayDuration.toMillis());
         }
