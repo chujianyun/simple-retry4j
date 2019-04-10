@@ -4,13 +4,24 @@ import com.chujianyun.simpleretry.exception.BusinessException;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
+import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;
+import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
+
+import static org.mockito.ArgumentMatchers.any;
 
 /**
  * 重试测试
@@ -19,8 +30,17 @@ import java.util.concurrent.TimeUnit;
  * @date: 2019-04-04 10:42
  */
 @Slf4j
+@RunWith(PowerMockRunner.class)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class SimpleRetryUtilTest {
 
+
+    @Mock
+    private Callable<Integer> callable;
+
+
+    @Mock
+    private Consumer<List<Integer>> consumer;
 
     /**
      * 提供两种设置延时时间的方法
@@ -64,9 +84,9 @@ public class SimpleRetryUtilTest {
                 .delayDuration(Duration.ofSeconds(5))
                 .build();
 
-        SimpleRetryUtil.executeWithRetry(() -> {
-            throw new BusinessException();
-        }, retryPolicy);
+        Mockito.doThrow(new BusinessException()).when(callable).call();
+
+        SimpleRetryUtil.executeWithRetry(callable, retryPolicy);
     }
 
     /**
@@ -83,16 +103,10 @@ public class SimpleRetryUtilTest {
                 .build();
 
         try {
-            Integer result = SimpleRetryUtil.executeWithRetry(() -> {
-                // 随机数为奇数时报参数异常，会重试
-                Random random = new Random();
-                int nextInt = random.nextInt(100);
-                if ((nextInt & 1) == 1) {
-                    log.debug("生成的随机数{}为奇数，异常在不重试异常列表中，报错后不会触发重试", nextInt);
-                    throw new IllegalArgumentException();
-                }
-                return random.nextInt(5);
-            }, retryPolicy);
+
+            Mockito.doThrow(new IllegalArgumentException()).doReturn(1).when(callable).call();
+
+            Integer result = SimpleRetryUtil.executeWithRetry(callable, retryPolicy);
             log.debug("最终返回值{}", result);
         } catch (IllegalArgumentException e) {
             log.debug("报错");
@@ -112,17 +126,9 @@ public class SimpleRetryUtilTest {
                 .abortException(BusinessException.class)
                 .build();
 
+        Mockito.doThrow(new NullPointerException()).doReturn(1).when(callable).call();
 
-        Integer result = SimpleRetryUtil.executeWithRetry(() -> {
-            // 随机数为奇数时报参数异常，会重试
-            Random random = new Random();
-            int nextInt = random.nextInt(100);
-            if ((nextInt & 1) == 1) {
-                log.debug("生成的随机数{}为奇数，异常不在不重试异常列表中，报错后仍然会触发重试", nextInt);
-                throw new NullPointerException();
-            }
-            return random.nextInt(5);
-        }, retryPolicy);
+        Integer result = SimpleRetryUtil.executeWithRetry(callable, retryPolicy);
         log.debug("最终返回值{}", result);
     }
 
@@ -138,16 +144,10 @@ public class SimpleRetryUtilTest {
                 .abortCondition(Objects::nonNull)
                 .build();
 
-        Integer result = SimpleRetryUtil.executeWithRetry(() -> {
-            // 随机数为奇数时报参数异常，会重试
-            Random random = new Random();
-            int nextInt = random.nextInt(100);
-            if ((nextInt & 1) == 1) {
-                log.debug("随机数为{}，返回null，会触发重试", nextInt);
-                return null;
-            }
-            return random.nextInt(5);
-        }, retryPolicy);
+        //前两次返回null 需要重试
+        Mockito.doReturn(null).doReturn(null).doReturn(1).when(callable).call();
+
+        Integer result = SimpleRetryUtil.executeWithRetry(callable, retryPolicy);
         log.debug("最终返回值{}", result);
     }
 
@@ -163,18 +163,14 @@ public class SimpleRetryUtilTest {
         data.add(2);
         data.add(3);
         data.add(4);
-        SimpleRetryUtil.executeWithRetry((List<Integer> list) -> {
 
-            // 随机数为奇数时报参数异常，会重试
-            Random random = new Random();
-            int nextInt = random.nextInt(1000);
-            if ((nextInt & 1) == 1) {
-                log.debug("随机数为{}，触发报错", nextInt);
-                throw new RuntimeException("测试");
-            }
-            System.out.println("消费成功，列表个数" + list.size());
+        Mockito.doThrow(new RuntimeException("测试")).doThrow(new RuntimeException("测试2")).doAnswer(invocationOnMock -> {
+            Object param = invocationOnMock.getArgument(0);
+            System.out.println("消费成功，列表个数" + ((List) param).size());
+            return param;
+        }).when(consumer).accept(any());
 
-        }, data, retryPolicy);
+        SimpleRetryUtil.executeWithRetry(consumer, data, retryPolicy);
     }
 
 
