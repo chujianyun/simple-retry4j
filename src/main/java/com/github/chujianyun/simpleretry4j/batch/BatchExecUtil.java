@@ -1,6 +1,6 @@
-package com.chujianyun.simpleretry.batch;
+package com.github.chujianyun.simpleretry4j.batch;
 
-import com.chujianyun.simpleretry.SimpleRetryUtil;
+import com.github.chujianyun.simpleretry4j.SimpleRetryUtil;
 
 import java.time.Duration;
 import java.util.List;

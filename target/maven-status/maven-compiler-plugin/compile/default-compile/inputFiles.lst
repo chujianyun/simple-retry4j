@@ -1,3 +1,6 @@
 /Users/liuwangyang/coding/simpleretry/src/main/java/com/chujianyun/simpleretry/exception/BusinessException.java
+/Users/liuwangyang/coding/simpleretry/src/main/java/com/chujianyun/simpleretry/batch/BatchExecUtil.java
+/Users/liuwangyang/coding/simpleretry/src/main/java/com/chujianyun/simpleretry/batch/BatchExePolicy.java
+/Users/liuwangyang/coding/simpleretry/src/main/java/com/chujianyun/simpleretry/batch/FailPolicy.java
 /Users/liuwangyang/coding/simpleretry/src/main/java/com/chujianyun/simpleretry/RetryPolicy.java
 /Users/liuwangyang/coding/simpleretry/src/main/java/com/chujianyun/simpleretry/SimpleRetryUtil.java

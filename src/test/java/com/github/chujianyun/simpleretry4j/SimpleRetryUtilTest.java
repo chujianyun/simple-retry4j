@@ -1,6 +1,6 @@
-package com.chujianyun.simpleretry;
+package com.github.chujianyun.simpleretry4j;
 
-import com.chujianyun.simpleretry.exception.BusinessException;
+import com.github.chujianyun.simpleretry4j.exception.BusinessException;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Assert;
 import org.junit.Test;
@@ -8,7 +8,6 @@ import org.junit.jupiter.api.TestInstance;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.powermock.api.mockito.PowerMockito;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.time.Duration;

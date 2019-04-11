@@ -1,4 +1,4 @@
-package com.chujianyun.simpleretry;
+package com.github.chujianyun.simpleretry4j;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;

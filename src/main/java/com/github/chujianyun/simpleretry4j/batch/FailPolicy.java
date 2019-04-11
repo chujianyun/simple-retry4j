@@ -1,4 +1,4 @@
-package com.chujianyun.simpleretry.batch;
+package com.github.chujianyun.simpleretry4j.batch;
 
 /**
  * 出错策略

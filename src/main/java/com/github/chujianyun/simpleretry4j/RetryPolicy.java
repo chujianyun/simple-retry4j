@@ -1,6 +1,5 @@
-package com.chujianyun.simpleretry;
+package com.github.chujianyun.simpleretry4j;
 
-import lombok.Builder;
 import lombok.Data;
 import org.apache.commons.collections4.CollectionUtils;
 

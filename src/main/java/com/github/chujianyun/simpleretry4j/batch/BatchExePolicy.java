@@ -1,6 +1,6 @@
-package com.chujianyun.simpleretry.batch;
+package com.github.chujianyun.simpleretry4j.batch;
 
-import com.chujianyun.simpleretry.RetryPolicy;
+import com.github.chujianyun.simpleretry4j.RetryPolicy;
 import lombok.Builder;
 import lombok.Data;
 

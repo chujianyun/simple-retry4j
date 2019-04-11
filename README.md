@@ -1,4 +1,4 @@
-# simple-retry
+# simple-retry4j
 简单的Java重试和分批执行工具类
 
 # 核心功能

@@ -1,7 +1,7 @@
-package com.chujianyun.simpleretry.batch;
+package com.github.chujianyun.simpleretry4j.batch;
 
 
-import com.chujianyun.simpleretry.RetryPolicy;
+import com.github.chujianyun.simpleretry4j.RetryPolicy;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
