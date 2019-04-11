@@ -1,4 +1,4 @@
-package com.github.chujianyun.simpleretry4j.batch;
+package com.github.chujianyun.simpleretry4j.batchexec;
 
 import com.github.chujianyun.simpleretry4j.RetryPolicy;
 import lombok.Builder;
