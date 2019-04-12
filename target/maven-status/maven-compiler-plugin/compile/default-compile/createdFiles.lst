@@ -1,8 +1,0 @@
-com/chujianyun/simpleretry/RetryPolicy.class
-com/chujianyun/simpleretry/batch/BatchExePolicy$BatchExePolicyBuilder.class
-com/chujianyun/simpleretry/RetryPolicy$Builder.class
-com/chujianyun/simpleretry/batch/BatchExecUtil.class
-com/chujianyun/simpleretry/SimpleRetryUtil.class
-com/chujianyun/simpleretry/batch/BatchExePolicy.class
-com/chujianyun/simpleretry/exception/BusinessException.class
-com/chujianyun/simpleretry/batch/FailPolicy.class
