@@ -9,7 +9,7 @@ maven配置
 <dependency>
     <groupId>com.github.chujianyun</groupId>
     <artifactId>simple-retry4j</artifactId>
-    <version>1.1.1</version>
+    <version>1.1.2.rc0</version>
 </dependency>
 ```
 
