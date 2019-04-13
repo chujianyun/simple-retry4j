@@ -23,7 +23,7 @@ import static org.mockito.ArgumentMatchers.any;
 /**
  * 重试测试
  *
- * @author: 明明如月 liuwangyanghdu@163.com
+ * @author: 明明如月 liuwangyangedu@163.com
  * @date: 2019-04-04 10:42
  */
 @Slf4j
@@ -31,10 +31,8 @@ import static org.mockito.ArgumentMatchers.any;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class SimpleRetryUtilTest {
 
-
     @Mock
     private Callable<Integer> callable;
-
 
     @Mock
     private Consumer<List<Integer>> consumer;
@@ -46,7 +44,7 @@ public class SimpleRetryUtilTest {
     public void delayDuration() {
         RetryPolicy retryPolicy1 = RetryPolicy.builder()
                 .maxRetries(3)
-                .delayDuration(Duration.ofSeconds(5))
+                .delayDuration(Duration.ofMillis(100))
                 .build();
 
         RetryPolicy retryPolicy2 = RetryPolicy.builder()
@@ -78,7 +76,7 @@ public class SimpleRetryUtilTest {
 
         RetryPolicy retryPolicy = RetryPolicy.builder()
                 .maxRetries(3)
-                .delayDuration(Duration.ofSeconds(5))
+                .delayDuration(Duration.ofMillis(100))
                 .build();
 
         Mockito.doThrow(new BusinessException()).when(callable).call();
@@ -94,7 +92,7 @@ public class SimpleRetryUtilTest {
 
         RetryPolicy retryPolicy = RetryPolicy.builder()
                 .maxRetries(3)
-                .delayDuration(Duration.ofSeconds(5))
+                .delayDuration(Duration.ofMillis(100))
                 .abortException(IllegalArgumentException.class)
                 .abortException(BusinessException.class)
                 .build();
@@ -119,7 +117,7 @@ public class SimpleRetryUtilTest {
 
         RetryPolicy retryPolicy = RetryPolicy.builder()
                 .maxRetries(3)
-                .delayDuration(Duration.ofSeconds(5))
+                .delayDuration(Duration.ofMillis(100))
                 .abortException(BusinessException.class)
                 .build();
 
@@ -137,7 +135,7 @@ public class SimpleRetryUtilTest {
 
         RetryPolicy retryPolicy = RetryPolicy.builder()
                 .maxRetries(3)
-                .delayDuration(Duration.ofSeconds(5))
+                .delayDuration(Duration.ofMillis(100))
                 .abortCondition(Objects::nonNull)
                 .build();
 
@@ -153,7 +151,7 @@ public class SimpleRetryUtilTest {
     public void consumerTest() throws Exception {
         RetryPolicy retryPolicy = RetryPolicy.builder()
                 .maxRetries(3)
-                .delayDuration(Duration.ofSeconds(5))
+                .delayDuration(Duration.ofMillis(100))
                 .build();
         List<Integer> data = new ArrayList<>(4);
         data.add(1);

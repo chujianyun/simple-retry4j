@@ -18,7 +18,7 @@ import java.util.function.Consumer;
 import static org.mockito.ArgumentMatchers.any;
 
 /**
- * @author: 明明如月 liuwangyanghdu@163.com
+ * @author: 明明如月 liuwangyangedu@163.com
  * @date: 2019-04-10 16:38
  */
 @RunWith(MockitoJUnitRunner.class)

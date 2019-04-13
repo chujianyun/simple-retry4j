@@ -12,7 +12,7 @@ import java.util.function.Predicate;
 /**
  * 重试策略
  *
- * @author: 明明如月 liuwangyanghdu@163.com
+ * @author: 明明如月 liuwangyangedu@163.com
  * @date: 2019-04-05 10:06
  */
 @Data
