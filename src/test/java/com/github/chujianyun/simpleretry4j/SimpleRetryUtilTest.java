@@ -49,7 +49,7 @@ public class SimpleRetryUtilTest {
 
         RetryPolicy retryPolicy2 = RetryPolicy.builder()
                 .maxRetries(3)
-                .delayDuration(5, TimeUnit.SECONDS)
+                .delayDuration(5, TimeUnit.MILLISECONDS)
                 .build();
         Assert.assertEquals(retryPolicy1.getDelayDuration(), retryPolicy2.getDelayDuration());
     }
