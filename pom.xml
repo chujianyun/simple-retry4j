@@ -6,10 +6,10 @@
 
     <groupId>com.github.chujianyun</groupId>
     <artifactId>simple-retry4j</artifactId>
-    <version>1.1.1</version>
+    <version>1.1.2.rc0</version>
     <packaging>jar</packaging>
 
-    <name>simple-retry4jt</name>
+    <name>simple-retry4j</name>
     <description>A Java method retry and batch execute open source lib.</description>
     <url>https://github.com/chujianyun/simple-retry4j/tree/master</url>
 
