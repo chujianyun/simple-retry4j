@@ -44,7 +44,7 @@ public class SimpleRetryUtilTest {
     public void delayDuration() {
         RetryPolicy retryPolicy1 = RetryPolicy.builder()
                 .maxRetries(3)
-                .delayDuration(Duration.ofMillis(100))
+                .delayDuration(Duration.ofMillis(5))
                 .build();
 
         RetryPolicy retryPolicy2 = RetryPolicy.builder()
