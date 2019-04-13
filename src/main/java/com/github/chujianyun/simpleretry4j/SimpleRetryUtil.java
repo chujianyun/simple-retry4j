@@ -11,18 +11,12 @@ import java.util.function.Predicate;
 
 /**
  * 方法重试工具类
- * <p>
- * 主要场景：
- * 1、轮询直到满足某个条件
- * 2、乐观锁重试
- * 3、其他异常或者不满足某个条件重试的场景
  *
- * @author: 明明如月 liuwangyanghudu@163.com
+ * @author: 明明如月 liuwangyangedu@163.com
  * @date: 2019-04-05 02:09
  */
 @Slf4j
 public class SimpleRetryUtil {
-
 
     /**
      * 无返回值的重试方法

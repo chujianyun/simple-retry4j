@@ -87,7 +87,7 @@ public class SimpleRetryUtilTest {
     /**
      * 模拟终止异常不重试
      */
-    @Test
+    @Test(expected = IllegalArgumentException.class)
     public void executeWithAbortException() throws Exception {
 
         RetryPolicy retryPolicy = RetryPolicy.builder()
@@ -97,16 +97,10 @@ public class SimpleRetryUtilTest {
                 .abortException(BusinessException.class)
                 .build();
 
-        try {
-
             Mockito.doThrow(new IllegalArgumentException()).doReturn(1).when(callable).call();
 
             Integer result = SimpleRetryUtil.executeWithRetry(callable, retryPolicy);
             log.debug("最终返回值{}", result);
-        } catch (IllegalArgumentException e) {
-            log.debug("报错");
-        }
-
     }
 
     /**
@@ -146,7 +140,9 @@ public class SimpleRetryUtilTest {
         log.debug("最终返回值{}", result);
     }
 
-
+    /**
+     * 测试无返回值的情况
+     */
     @Test
     public void consumerTest() throws Exception {
         RetryPolicy retryPolicy = RetryPolicy.builder()
